@@ -188,7 +188,7 @@ func TestXidErrors_OccurrencesOverride(t *testing.T) {
 		{name: "critical", checkID: "gpu_xid_79", code: 79, wantSeverity: health.Critical},
 		{name: "warning", checkID: "gpu_xid_8", code: 8, wantSeverity: health.Warning},
 		{name: "xid 45 alone", checkID: "gpu_xid_45", code: 45, wantSeverity: health.Warning},
-		{name: "informational", checkID: "gpu_xid_154", code: 154, wantSeverity: health.Info},
+		{name: "unreadable recovery action", checkID: "gpu_xid_154", code: 154, wantSeverity: health.Warning},
 	}
 
 	for _, tt := range tests {
@@ -316,7 +316,7 @@ func TestXidErrors_SeverityByBucket(t *testing.T) {
 		{"vgpu start (78)", 78, health.Warning},
 		{"preemptive removal (45)", 45, health.Warning},
 		{"key rotation (151)", 151, health.Critical},
-		{"recovery action changed (154)", 154, health.Info},
+		{"recovery action changed, transition unreadable (154)", 154, health.Warning},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
