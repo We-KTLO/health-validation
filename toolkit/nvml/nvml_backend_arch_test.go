@@ -22,6 +22,7 @@ func TestArchitectureFromName(t *testing.T) {
 		"NVIDIA GB300":            "GB300",
 		"NVIDIA GB200":            "GB200",
 		"NVIDIA B200":             "B200",
+		"NVIDIA B300 SXM6 AC":     "B300",
 		"NVIDIA H100 80GB HBM3":   "H100",
 		"NVIDIA H200":             "H200",
 		"NVIDIA A100-SXM4-80GB":   "A100",
