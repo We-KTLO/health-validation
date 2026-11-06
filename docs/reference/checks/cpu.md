@@ -41,14 +41,14 @@ Verifies a node brought online the expected number of NUMA nodes for its archite
 | Scheduling cadence | <nobr>`CONTINUOUS`</nobr> |
 | Maturity | <nobr>`stable`</nobr> |
 | Execution contexts | <nobr>`OPERATOR_INFRA`</nobr>, <nobr>`TENANT_GUEST`</nobr> |
-| Architectures | <nobr>`GB200`</nobr>, <nobr>`GB300`</nobr> |
+| Architectures | <nobr>`GB200`</nobr>, <nobr>`GB300`</nobr>, <nobr>`B300`</nobr> |
 | Required signals | <nobr>`numa_node_count`</nobr> |
 
 **Thresholds**
 
 | Name | Value | Unit | Category | Description |
 |---|---|---|---|---|
-| <nobr>`expected_numa_node_count`</nobr> | GB200: 34, GB300: 34, other: 34 | count | <nobr>`DEFAULT`</nobr> | Expected number of NUMA nodes online. GB200 and GB300 at 34. Override per fleet. |
+| <nobr>`expected_numa_node_count`</nobr> | B300: 2, GB200: 34, GB300: 34, other: 34 | count | <nobr>`DEFAULT`</nobr> | Expected number of NUMA nodes online. GB200 and GB300 at 34, B300 at 2 (one per socket). Override per fleet. |
 
 **Rules**
 
