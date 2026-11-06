@@ -14,6 +14,10 @@ import "github.com/dsx-ai-factory/health-validation/catalog/health"
 // multi-GPU NVLink collectives. Both conditions are collected per GPU
 // from the same fabric-info query that feeds [NVLinkFabricHealth].
 //
+// B300 is not listed: on an HGX B300 node the NVLink fabric is the node's
+// own baseboard NVSwitches, not a multi-node domain, while this check
+// declares ConditionScope DOMAIN.
+//
 // The check models one severity tier:
 //   - CRITICAL: fabric registration has not completed, or completed with
 //     a failure status.

@@ -16,6 +16,11 @@ import "github.com/dsx-ai-factory/health-validation/catalog/health"
 // The flags decode from a single GPU fabric info health bitmask, so one
 // NVML query per GPU covers every condition below.
 //
+// B300 is not listed: on an HGX B300 node the NVLink fabric is the node's
+// own baseboard NVSwitches, not a multi-node domain, while this check
+// declares ConditionScope DOMAIN and ends its remediation ladder in a
+// domain-wide hold.
+//
 // The check models one severity tier:
 //   - CRITICAL: fabric bandwidth is not Full, fabric route recovery is
 //     in progress, a fabric route is unhealthy, or fabric access
