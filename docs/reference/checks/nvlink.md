@@ -81,7 +81,7 @@ Verifies every NVLink on each GPU reports the capabilities required for multi-GP
 | Scheduling cadence | <nobr>`CONTINUOUS`</nobr> |
 | Maturity | <nobr>`stable`</nobr> |
 | Execution contexts | <nobr>`OPERATOR_INFRA`</nobr>, <nobr>`TENANT_GUEST`</nobr> |
-| Architectures | <nobr>`GB200`</nobr>, <nobr>`GB300`</nobr>, <nobr>`B200`</nobr> |
+| Architectures | <nobr>`GB200`</nobr>, <nobr>`GB300`</nobr>, <nobr>`B200`</nobr>, <nobr>`B300`</nobr> |
 | Required signals | <nobr>`gpu_id`</nobr>, <nobr>`all_links_support_p2p`</nobr>, <nobr>`all_links_support_sysmem_access`</nobr>, <nobr>`all_links_support_p2p_atomics`</nobr>, <nobr>`all_links_support_sysmem_atomics`</nobr>, <nobr>`all_links_support_sli`</nobr>, <nobr>`all_links_support_link`</nobr> |
 
 **Rules**

@@ -48,7 +48,7 @@ func TestNUMANodeCountDefinition(t *testing.T) {
 	if definition.SchedulingCadence != health.Continuous {
 		t.Errorf("SchedulingCadence = %v, want Continuous", definition.SchedulingCadence)
 	}
-	if got, want := definition.Architectures, []string{"GB200", "GB300"}; !slices.Equal(got, want) {
+	if got, want := definition.Architectures, []string{"GB200", "GB300", "B300"}; !slices.Equal(got, want) {
 		t.Errorf("Architectures = %v, want %v", got, want)
 	}
 	if definition.Provenance != health.NVIDIA || definition.MaturityLevel != health.Stable {
@@ -68,6 +68,7 @@ func TestNUMANodeCountDefinition(t *testing.T) {
 	wantPerArchitecture := map[string]int64{
 		"GB200": 34,
 		"GB300": 34,
+		"B300":  2,
 	}
 	if len(spec.PerArchitecture) != len(wantPerArchitecture) {
 		t.Errorf("PerArchitecture = %v, want exactly %v", spec.PerArchitecture, wantPerArchitecture)
@@ -156,20 +157,20 @@ func TestNUMANodeCount(t *testing.T) {
 // Every supported architecture has an explicit threshold, even when its value
 // currently matches the base fallback.
 func TestNUMANodeCount_PerArchitectureDefault(t *testing.T) {
-	for _, architecture := range []string{"GB200", "GB300"} {
+	for architecture, count := range map[string]int64{"GB200": 34, "GB300": 34, "B300": 2} {
 		t.Run(architecture, func(t *testing.T) {
 			cat := catalog.New(
 				catalog.WithArchitecture(architecture),
 				catalog.WithExecutionContext(health.OperatorInfra),
 			)
 
-			verdict, err := cat.Evaluate("numa_node_count", cpu.CPUMeasurement{NUMANodeCount: 34})
+			verdict, err := cat.Evaluate("numa_node_count", cpu.CPUMeasurement{NUMANodeCount: count})
 			if err != nil {
 				t.Fatal(err)
 			}
 			if verdict.Skipped || verdict.Severity != health.Pass {
-				t.Fatalf("skipped=%v severity=%v, want evaluated PASS (34 == %s default)",
-					verdict.Skipped, verdict.Severity, architecture)
+				t.Fatalf("skipped=%v severity=%v, want evaluated PASS (%d == %s default)",
+					verdict.Skipped, verdict.Severity, count, architecture)
 			}
 		})
 	}

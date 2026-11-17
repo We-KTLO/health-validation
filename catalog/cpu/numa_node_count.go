@@ -13,16 +13,17 @@ import "github.com/dsx-ai-factory/health-validation/catalog/health"
 // argument, or a node provisioned as the wrong SKU. A reboot is required for a
 // corrected firmware or boot-argument setting to take effect.
 //
-// Covers GB200 and GB300 (34 nodes). A100, H100, and H200 are not yet covered;
+// Covers GB200 and GB300 (34 nodes) and B300 (2). A100, H100, and H200 are not yet covered;
 // they need their own PerArchitecture entries before being added.
 // On these platforms the count spans more than the CPU sockets: accelerator
 // memory is exposed as additional nodes, so the expected value tracks the
 // whole platform topology rather than the socket count alone.
 //
-// TODO(B300): B300 is not covered yet. An HGX B300 node is a two-socket
-// x86_64 host with no Grace C2C link, so its count is the host's CPU NUMA
-// layout (which the platform firmware's NUMA-partitioning setting decides),
-// not the GB200/GB300 34. Add "B300" with a measured count.
+// An HGX B300 node is a two-socket x86_64 host with no Grace C2C link, so its
+// count is the host's CPU NUMA layout, not the GB200/GB300 34: 2 with the
+// firmware's default one node per socket (measured on two HGX B300 nodes,
+// /sys/devices/system/node/online = 0-1). A fleet that partitions each socket
+// further (more nodes per socket) overrides the value.
 func NUMANodeCount() health.CheckDefinition {
 	return health.CheckDefinition{
 		ID:          "numa_node_count",
@@ -35,7 +36,7 @@ func NUMANodeCount() health.CheckDefinition {
 		ExecutionClass:    health.Passive,
 		ExecutionContexts: []health.ExecutionContext{health.OperatorInfra, health.TenantGuest},
 		SchedulingCadence: health.Continuous,
-		Architectures:     []string{"GB200", "GB300"},
+		Architectures:     []string{"GB200", "GB300", "B300"},
 
 		ConditionScope:    health.NodeScope,
 		Provenance:        health.NVIDIA,
@@ -48,11 +49,12 @@ func NUMANodeCount() health.CheckDefinition {
 				PerArchitecture: map[string]any{
 					"GB200": int64(34),
 					"GB300": int64(34),
+					"B300":  int64(2),
 				},
 				ValueType:   health.ThresholdInt64,
 				ValueMin:    int64(1),
 				Category:    health.DefaultThreshold,
-				Description: "Expected number of NUMA nodes online. GB200 and GB300 at 34. Override per fleet.",
+				Description: "Expected number of NUMA nodes online. GB200 and GB300 at 34, B300 at 2 (one per socket). Override per fleet.",
 				Unit:        "count",
 			},
 		},
