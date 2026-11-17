@@ -18,6 +18,11 @@ import "github.com/dsx-ai-factory/health-validation/catalog/health"
 // On these platforms the count spans more than the CPU sockets: accelerator
 // memory is exposed as additional nodes, so the expected value tracks the
 // whole platform topology rather than the socket count alone.
+//
+// TODO(B300): B300 is not covered yet. An HGX B300 node is a two-socket
+// x86_64 host with no Grace C2C link, so its count is the host's CPU NUMA
+// layout (which the platform firmware's NUMA-partitioning setting decides),
+// not the GB200/GB300 34. Add "B300" with a measured count.
 func NUMANodeCount() health.CheckDefinition {
 	return health.CheckDefinition{
 		ID:          "numa_node_count",

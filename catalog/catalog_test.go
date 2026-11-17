@@ -110,6 +110,48 @@ func TestCatalog_ListByArchitecture(t *testing.T) {
 	}
 }
 
+// TestCatalog_B300Coverage pins which built-in checks run on an HGX B300
+// node. The NVLink fabric checks are domain-scoped (multi-node NVLink) and
+// stay off; NUMA node count and NVLink capabilities wait for a B300 reading.
+func TestCatalog_B300Coverage(t *testing.T) {
+	ids := make(map[string]bool)
+	for _, cd := range New().List(Filter{Architecture: "B300"}) {
+		ids[cd.ID] = true
+	}
+	for _, id := range []string{
+		"cpu_count",
+		"gpu_average_power_draw",
+		"gpu_compute_apps",
+		"gpu_count",
+		"gpu_power_limit",
+		"gpu_power_state",
+		"gpu_sensor_throttle",
+		"gpu_xid_79",
+		"gpu_xid_146",
+		"gpu_xid_154",
+		"gpu_xid_126",
+		"gpu_xid_8",
+		"nvlink_active",
+		"nvlink_bandwidth_count_speed",
+		"nvlink_p2p",
+		"rdma_linkflap_fatal",
+	} {
+		if !ids[id] {
+			t.Errorf("%s does not run on B300", id)
+		}
+	}
+	for _, id := range []string{
+		"numa_node_count",
+		"nvlink_capabilities",
+		"nvlink_fabric",
+		"nvlink_fabric_health",
+	} {
+		if ids[id] {
+			t.Errorf("%s runs on B300, want it unlisted", id)
+		}
+	}
+}
+
 func TestCatalog_Len(t *testing.T) {
 	cat := NewEmpty()
 	if cat.Len() != 0 {

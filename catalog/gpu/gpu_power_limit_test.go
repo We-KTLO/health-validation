@@ -48,6 +48,7 @@ func TestGPUPowerLimit_UsesArchitectureDefault(t *testing.T) {
 	}{
 		{arch: "GB200", limitW: 1200},
 		{arch: "GB300", limitW: 1400},
+		{arch: "B300", limitW: 1100},
 		{arch: "H100", limitW: 700},
 		{arch: "VR200", limitW: 2300},
 	} {

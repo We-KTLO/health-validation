@@ -13,6 +13,10 @@ import "github.com/dsx-ai-factory/health-validation/catalog/health"
 // expected_power_limit_w, which defaults per architecture (operators may
 // override). There is no architecture-agnostic Value; Evaluate requires
 // WithArchitecture.
+//
+// The B300 default (1100 W) is the current, default and maximum power limit
+// read on HGX B300 boards reporting "NVIDIA B300 SXM6 AC". A B300 board
+// variant with a different default limit overrides expected_power_limit_w.
 func GPUPowerLimit() health.CheckDefinition {
 	return health.CheckDefinition{
 		ID:          "gpu_power_limit",
@@ -31,7 +35,7 @@ func GPUPowerLimit() health.CheckDefinition {
 		ExecutionClass:    health.Passive,
 		ExecutionContexts: []health.ExecutionContext{health.OperatorInfra, health.TenantGuest},
 		SchedulingCadence: health.Prolog,
-		Architectures:     []string{"GB200", "GB300", "H100", "VR200"},
+		Architectures:     []string{"GB200", "GB300", "B300", "H100", "VR200"},
 
 		ConditionScope:    health.NodeScope,
 		Provenance:        health.NVIDIA,
@@ -43,6 +47,7 @@ func GPUPowerLimit() health.CheckDefinition {
 				PerArchitecture: map[string]any{
 					"GB200": float64(1200),
 					"GB300": float64(1400),
+					"B300":  float64(1100),
 					"H100":  float64(700),
 					"VR200": float64(2300),
 				},
