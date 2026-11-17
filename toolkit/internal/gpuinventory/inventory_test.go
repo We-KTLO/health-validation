@@ -256,6 +256,7 @@ func TestArchitecture(t *testing.T) {
 		{name: "failed slot skipped", snapshot: inventory(failedEntry(0, handleOperation), gpuEntry(1, "NVIDIA H100 80GB HBM3")), want: "H100"},
 		{name: "VR200 by name", snapshot: inventory(gpuEntry(0, "NVIDIA VR200")), want: "VR200"},
 		{name: "other VR name", snapshot: inventory(gpuEntry(0, "NVIDIA VR Test")), want: "VR200"},
+		{name: "B300 after GB300", snapshot: inventory(gpuEntry(0, "NVIDIA B300 SXM6 AC")), want: "B300"},
 		{name: "unrecognized", snapshot: inventory(gpuEntry(0, "NVIDIA A10")), want: ArchitectureUnknown},
 		{name: "generic name", snapshot: inventory(gpuEntry(0, "NVIDIA Graphics Device")), want: ArchitectureUnknown},
 		{name: "enumeration failure", snapshot: enumerationFailure(), err: "Driver Not Loaded"},
